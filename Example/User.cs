@@ -6,9 +6,17 @@ public interface IUser
 {
     string UserName { get; set; }
     string Password { get; set; }
+    string FirstName { get; set; }
+    string LastName { get; set; }
     bool IsActive { get; set; }
 }
 public interface IPersonal : IUser
+{
+    string SSN { get; set; }
+    decimal Salary { get; set; }
+    void CalculateSalary(short workingHours);
+}
+public interface IVolunteer : IUser
 {
     string SSN { get; set; }
     decimal Salary { get; set; }
@@ -41,6 +49,8 @@ public abstract class User:IUser
     public string UserName { get; set; }
     public string Password { get; set; }
     public bool IsActive { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
     public User() { }
     public User(string userName, string password,bool isActive) {
         UserName = userName;
@@ -50,12 +60,27 @@ public abstract class User:IUser
 
 }
 
-public class Personal : User,IPersonal
+public class Personal : User, IPersonal
 {
     public string SSN { get; set; }
     public decimal Salary { get; set; }
-    public Personal(){}
-    public Personal(string userName,string password,bool isActive, string ssn,decimal salary):base(userName,password,isActive)
+    public Personal() { }
+    public Personal(string userName, string password, bool isActive, string ssn, decimal salary) : base(userName, password, isActive)
+    {
+        SSN = ssn;
+        Salary = salary;
+    }
+    public void CalculateSalary(short workingHours)
+    {
+        Console.WriteLine(@$"Calculated salary: {Salary * workingHours} ₺");
+    }
+}
+public class Volunteer : User, IVolunteer
+{
+    public string SSN { get; set; }
+    public decimal Salary { get; set; }
+    public Volunteer() { }
+    public Volunteer(string userName, string password, bool isActive, string ssn, decimal salary) : base(userName, password, isActive)
     {
         SSN = ssn;
         Salary = salary;
