@@ -2,13 +2,20 @@
 namespace ReExample;
 public class SearchAttribute:Attribute
 {
-    public string Match { get; set; } //After,Last,Contains
+    public MatchTypes Match { get; set; }
     public SearchAttribute()
     {
-        Match = "Full";
+        Match = MatchTypes.Full;
     }
-    public SearchAttribute(string mathch)
+    public SearchAttribute(MatchTypes matchType)
     {
-        Match = mathch;
+        Match = matchType;
     }
+}
+public enum MatchTypes
+{
+    Full,
+    StartsWith,
+    EndsWith,
+    Contains
 }

@@ -1,6 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using ReExample;
 
 Console.WriteLine("Hello, World!");
@@ -33,7 +32,7 @@ users.Add(new Personal()
 {
     FirstName = "Merve",
     LastName = "Avcı",
-    IdentificationNumber = "11223344553",
+    IdentificationNumber = "11223544553",
     UserName = "merveavci",
     Password = "1234",
     SSN = "XXXX",
@@ -41,7 +40,6 @@ users.Add(new Personal()
     IsActive = true
 });
 cachedUser.AddDictionary(users,indexes);
-
 Search("112233")?.ToJsonString().WriteLine();
 
 Console.ReadKey();
@@ -81,19 +79,40 @@ public static class MicrosoftExtensions
             .ToList()
             .ForEach(property =>
             {
+                var attr =
+                 property.GetCustomAttributes(true)
+                .Where(attr => attr.GetType() == typeof(SearchAttribute))
+                .ToArray()[0] as SearchAttribute;
                 string? value = property.GetValue(user, null)?.ToString();
                 if (value != null)
                 {
-                    if (indexes.ContainsKey(value))
+                    value.SearchKeys(attr.Match).ForEach(val =>
                     {
-                        indexes[value].Add(user.UserName.ToLower());
-                    }
-                    else
-                    {
-                        indexes.Add(value.ToLower(), new List<string>() { user.UserName.ToLower() });
-                    }
+                        if (indexes.ContainsKey(val.ToLower()))
+                        {
+                            indexes[val.ToLower()].Add(user.UserName.ToLower());
+                        }
+                        else
+                        {
+                            indexes.Add(val.ToLower(), new List<string>() { user.UserName.ToLower() });
+                        }
+                    });
                 }
             });
         }); 
+    }
+    public static List<string> SearchKeys(this string key,MatchTypes matchType)
+    {
+        if (MatchTypes.Full == matchType) return new List<string>() { key };
+        
+        var keys=new List<string>();
+        for (int i=1; i <= key.Length; i++)
+        {
+            if (MatchTypes.StartsWith == matchType)
+                keys.Add(key.Substring(0, i));
+            if (MatchTypes.EndsWith == matchType)
+                keys.Add(key.Substring(key.Length- i));
+        }
+        return keys;
     }
 }

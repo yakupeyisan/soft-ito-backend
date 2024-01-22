@@ -30,9 +30,9 @@ public abstract class User : IUser
 {
     [Search]
     public string UserName { get; set; }
-    [Search]
+    [Search(MatchTypes.Full)]
     public string Password { get; set; }
-    [Search("After")]
+    [Search(MatchTypes.StartsWith)]
     public string IdentificationNumber { get; set; }
     [Search]
     public string FirstName { get; set; }
