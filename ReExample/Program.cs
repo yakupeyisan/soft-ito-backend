@@ -1,8 +1,84 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using System.Linq;
+using System.Linq.Expressions;
 using Newtonsoft.Json;
 using ReExample;
 
 Console.WriteLine("Hello, World!");
+
+List<IUser> users = new List<IUser>();
+users.Add(new Personal()
+{
+    FirstName = "Yakup",
+    LastName = "Eyisan",
+    IdentificationNumber = "11223344551",
+    UserName = "yakupeyisan",
+    Password = "1234",
+    SSN = "SSN",
+    Salary = 1500,
+    IsActive = true
+});
+users.Add(new Personal()
+{
+    FirstName = "Sezer",
+    LastName = "Ayran",
+    IdentificationNumber = "11223344552",
+    UserName = "sezerayran",
+    Password = "1234",
+    SSN = "SSNcik",
+    Salary = 2500,
+    IsActive = true
+});
+users.Add(new Personal()
+{
+    FirstName = "Merve",
+    LastName = "Avcı",
+    IdentificationNumber = "11223544553",
+    UserName = "merveavci",
+    Password = "1234",
+    SSN = "XXXX",
+    Salary = 2500,
+    IsActive = true
+});
+FindUserByComparer(user => user.FirstName.StartsWith("Y")&&user.LastName.EndsWith("n"));
+Console.ReadKey();
+
+void FindUserByFirstName(Expression<Func<IUser, bool>> predicate)
+{
+    users.AsQueryable().Where(predicate).ToJsonString().WriteLine();
+}
+
+void FindUserByComparer(Func<IUser,bool> func)
+{
+    users.Where(func).ToJsonString().WriteLine();
+}
+
+/*
+
+Func<string, string, bool> customComparer = (val, search) => val.EndsWith(search);
+
+//var res = customComparer("Ali","li");
+//res.ToJsonString().WriteLine();
+CustomComparerFunc("Test",(val,match)=> val!=match);
+Console.ReadKey();
+void CustomComparerFunc(string search,Func<string,string, bool> addAgeFunc=null)
+{
+    string value = "Test";
+    var result = value==search;
+    if (addAgeFunc != null)
+    {
+        //true,false
+       result= result&&addAgeFunc(value, search);
+    }
+
+    result.ToJsonString().WriteLine();
+}
+bool addAgeFuncv(string val,string search)
+{
+    return val.EndsWith(search);
+}
+
+Dictionary using best practices
 Dictionary<string, IUser> cachedUser = new Dictionary<string, IUser>();
 Dictionary<string, List<string>> indexes = new Dictionary<string, List<string>>();
 List<IUser> users = new List<IUser>();
@@ -53,6 +129,7 @@ List<IUser>? Search(string search)
     return null;
 }
 
+*/
 public static class MicrosoftExtensions
 {
     public static string ToJsonString(this object value) => JsonConvert.SerializeObject(value);
