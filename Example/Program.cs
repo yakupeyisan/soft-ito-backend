@@ -226,12 +226,14 @@ public static class MicrosoftExtensions
             if (personal!=null){
                 addIndex(personal.SSN, key);
             }
-            /*if(user is IPersonal)
+            /*
+            if(user is IPersonal)
             {
             yakupeyisan
                 var personal = (user as IPersonal);
                 if(personal!= null) addIndex(personal.SSN, key);
-            }*/
+            }
+            */
         });
     }
     public static TObject? CastTo<TObject>(this object value)
