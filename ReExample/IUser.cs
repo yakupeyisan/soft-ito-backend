@@ -32,7 +32,7 @@ public abstract class User : IUser
     public string UserName { get; set; }
     [Search]
     public string Password { get; set; }
-    [Search]
+    [Search("After")]
     public string IdentificationNumber { get; set; }
     [Search]
     public string FirstName { get; set; }
