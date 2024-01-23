@@ -2,7 +2,7 @@
 using DatabaseExample.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace DatabaseExample.Repositories;
+namespace DatabaseExample.Repositories.Contexts;
 
 public class ExampleDbContext:DbContext
 {

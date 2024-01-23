@@ -1,12 +1,60 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using DatabaseExample.Common;
 using DatabaseExample.Entities;
-using DatabaseExample.Repositories;
+using DatabaseExample.Repositories.Abstracts;
+using DatabaseExample.Repositories.Concretes;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Newtonsoft.Json;
+
+/*
+ * 
+ * Container Yapısı ve kullanımı
+
+IUserRepository userRepository = new UserRespository();
+
+CustomContainer.AddContainer<IUserRepository,UserRespository>();
+CustomContainer.AddContainer<IPersonalRepository,PersonalRepository>();
+CustomContainer.AddContainer<IStudentRepository,StudentRepository>();
+CustomContainer.AddContainer<IJobberRepository,JobberRepository>();
+
+var repository=CustomContainer.GetItem<IStudentRepository>();
+Console.WriteLine(repository.GetType());
+Console.ReadKey();
+*/
+/*
+
+Func<IQueryable<Personal>, IIncludableQueryable<Personal, object>> customInclude = (qPersonal) =>
+{
+    return qPersonal.Include(p => p.User);
+};
+Func<IQueryable<Personal>, IOrderedQueryable<Personal>> customOrderBy = (qPersonal) =>
+{
+    return qPersonal.OrderBy(p=>p.Salary).ThenBy(p=>p.User.FirstName);
+};
+
 PersonalRepository personalRespository = new();
 Console.WriteLine(JsonConvert.SerializeObject(
-    personalRespository.GetAll(include:personal=>personal.Include(p=>p.User)))
+    personalRespository
+    .GetAll(predicate: p => p.Salary > 1000 && p.Salary < 1020 && p.User.IdentificationNumber == "232-57-8710", include: customInclude, orderBy: customOrderBy)
+    .ToList()
+    )
+);
+
+*/
+/*
+
+Func<IQueryable<Personal>, IIncludableQueryable<Personal, object>> customInclude = (qPersonal) =>
+{
+    return qPersonal.Include(p => p.User);
+};
+
+PersonalRepository personalRespository = new();
+Console.WriteLine(JsonConvert.SerializeObject(
+    personalRespository.GetAll(include:customInclude))
    );
+
+*/
 /*
  * user ve personel ekleme
 UserRespository userRespository = new();

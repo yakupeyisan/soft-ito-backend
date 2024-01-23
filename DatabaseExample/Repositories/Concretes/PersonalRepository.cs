@@ -3,9 +3,10 @@ using System.Linq.Expressions;
 using DatabaseExample.Core;
 using DatabaseExample.Entities;
 using Microsoft.EntityFrameworkCore;
+using DatabaseExample.Repositories.Abstracts;
 
-namespace DatabaseExample.Repositories;
-public class PersonalRepository:BaseRepository<Personal>
+namespace DatabaseExample.Repositories.Concretes;
+public class PersonalRepository:BaseRepository<Personal>,IPersonalRepository
 {
 	public PersonalRepository()
 	{

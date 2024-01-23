@@ -1,12 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
-using DatabaseExample.Entities;
-using DatabaseExample.Repositories;
+﻿using System.Linq.Expressions;
+using DatabaseExample.Repositories.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 namespace DatabaseExample.Core;
-public class BaseRepository<TEntity>
+
+public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity>
 where TEntity : Entity
 {
     protected ExampleDbContext context;
@@ -14,23 +12,32 @@ where TEntity : Entity
     {
         context = new ExampleDbContext();
     }
-
-    public virtual IList<TEntity> GetAll(Expression<Func<TEntity, bool>>? predicate=null,
-        Func<IQueryable<TEntity>,IIncludableQueryable<TEntity,object>>? include=null)
+    public IQueryable<TEntity> Query()
     {
-        var result = context.Set<TEntity>().AsQueryable();
+        return context.Set<TEntity>();
+    }
+    public virtual IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>>? predicate=null,
+        Func<IQueryable<TEntity>,IIncludableQueryable<TEntity,object>>? include=null,
+        Func<IQueryable<TEntity>,IOrderedQueryable<TEntity>>? orderBy=null)
+    {
+        var query = Query();
         if (predicate!=null)
-            result= result.Where(predicate);
+            query = query.Where(predicate);
         if (include != null)
-            result=include(result);
-        return result.ToList();
+            query = include(query);
+        if (orderBy != null)
+            query = orderBy(query);
+        return query;
     }
 
-    public virtual TEntity? Get(Expression<Func<TEntity, bool>> predicate)
+    public virtual TEntity? Get(
+        Expression<Func<TEntity, bool>> predicate,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null
+        )
     {
-        var result = context.Set<TEntity>().Where(predicate);
-        Console.WriteLine(result.ToQueryString());
-        return result.FirstOrDefault();
+        var query = Query().Where(predicate);
+        if (include != null) query = include(query);
+        return query.FirstOrDefault();
     }
     public virtual TEntity Add(TEntity entity)
     {

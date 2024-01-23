@@ -12,12 +12,20 @@
     <None Remove="Repositories\" />
     <None Remove="Core\" />
     <None Remove="DummyData\" />
+    <None Remove="Repositories\Abstracts\" />
+    <None Remove="Repositories\Concretes\" />
+    <None Remove="Repositories\Contexts\" />
+    <None Remove="Common\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />
     <Folder Include="Repositories\" />
     <Folder Include="Core\" />
     <Folder Include="DummyData\" />
+    <Folder Include="Repositories\Abstracts\" />
+    <Folder Include="Repositories\Concretes\" />
+    <Folder Include="Repositories\Contexts\" />
+    <Folder Include="Common\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.15" />
