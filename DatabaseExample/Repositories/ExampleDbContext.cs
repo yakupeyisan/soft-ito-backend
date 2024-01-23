@@ -3,6 +3,7 @@ using DatabaseExample.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DatabaseExample.Repositories;
+
 public class ExampleDbContext:DbContext
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

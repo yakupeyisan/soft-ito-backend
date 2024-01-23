@@ -10,10 +10,14 @@
   <ItemGroup>
     <None Remove="Entities\" />
     <None Remove="Repositories\" />
+    <None Remove="Core\" />
+    <None Remove="DummyData\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />
     <Folder Include="Repositories\" />
+    <Folder Include="Core\" />
+    <Folder Include="DummyData\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.15" />
