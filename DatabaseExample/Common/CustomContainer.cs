@@ -1,4 +1,6 @@
 ﻿using System;
+using Newtonsoft.Json;
+
 namespace DatabaseExample.Common;
 
 public static class CustomContainer
@@ -13,6 +15,10 @@ public static class CustomContainer
 	}
 	public static T? GetItem<T>()
 	{
+		items.ForEach(item =>
+		{
+			Console.WriteLine(item.Obj);
+		});
 		return items.Where(item=> item.Obj is T).Select(item=>(T)item.Obj).FirstOrDefault();
     }
 

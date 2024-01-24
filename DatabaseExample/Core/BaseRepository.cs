@@ -16,6 +16,13 @@ where TEntity : Entity
     {
         return context.Set<TEntity>();
     }
+    /// <summary>
+    /// This function returned TEntity list by predicate and include and orderby
+    /// </summary>
+    /// <param name="predicate"></param>
+    /// <param name="include"></param>
+    /// <param name="orderBy"></param>
+    /// <returns></returns>
     public virtual IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>>? predicate=null,
         Func<IQueryable<TEntity>,IIncludableQueryable<TEntity,object>>? include=null,
         Func<IQueryable<TEntity>,IOrderedQueryable<TEntity>>? orderBy=null)

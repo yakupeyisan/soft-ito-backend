@@ -6,11 +6,6 @@ using DatabaseExample.Repositories.Concretes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Newtonsoft.Json;
-
-/*
- * 
- * Container Yapısı ve kullanımı
-
 IUserRepository userRepository = new UserRespository();
 
 CustomContainer.AddContainer<IUserRepository,UserRespository>();
@@ -21,8 +16,11 @@ CustomContainer.AddContainer<IJobberRepository,JobberRepository>();
 var repository=CustomContainer.GetItem<IStudentRepository>();
 Console.WriteLine(repository.GetType());
 Console.ReadKey();
-*/
 /*
+ * 
+ * Container Yapısı ve kullanımı
+
+*/
 
 Func<IQueryable<Personal>, IIncludableQueryable<Personal, object>> customInclude = (qPersonal) =>
 {
@@ -41,6 +39,7 @@ Console.WriteLine(JsonConvert.SerializeObject(
     )
 );
 
+/*
 */
 /*
 
