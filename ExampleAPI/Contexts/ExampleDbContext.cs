@@ -1,4 +1,5 @@
 ﻿using System;
+using ExampleAPI.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -15,6 +16,7 @@ public class ExampleDbContext:DbContext
         var connectionString = Configuration.GetValue<string>("ConnectionStrings:Production");
         optionsBuilder.UseSqlServer(connectionString);
     }
+    public DbSet<User> Users { get; set; }
 }
 
 

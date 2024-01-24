@@ -27,10 +27,18 @@
     <None Remove="Controllers\" />
     <None Remove="Contexts\" />
     <None Remove="Repositories\" />
+    <None Remove="Entities\" />
+    <None Remove="Core\" />
+    <None Remove="Repositories\Abstracts\" />
+    <None Remove="Repositories\Concretes\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Contexts\" />
     <Folder Include="Repositories\" />
+    <Folder Include="Entities\" />
+    <Folder Include="Core\" />
+    <Folder Include="Repositories\Abstracts\" />
+    <Folder Include="Repositories\Concretes\" />
   </ItemGroup>
 </Project>

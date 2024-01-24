@@ -1,5 +1,6 @@
 ﻿using ExampleAPI.Contexts;
-using ExampleAPI.Repositories;
+using ExampleAPI.Repositories.Abstracts;
+using ExampleAPI.Repositories.Concretes;
 
 var builder = WebApplication.CreateBuilder(args);
 
