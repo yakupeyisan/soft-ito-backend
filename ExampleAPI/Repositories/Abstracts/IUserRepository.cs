@@ -4,8 +4,7 @@ using ExampleAPI.Entities;
 
 namespace ExampleAPI.Repositories.Abstracts;
 
-public interface IUserRepository:IBaseRepository<User>
+public interface IUserRepository : IBaseRepository<User>
 {
-
 }
 

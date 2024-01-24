@@ -24,15 +24,15 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity>
     {
         var queryable = Query();
         if (predicate != null) queryable = queryable.Where(predicate);
-        if (include != null) include(queryable);
-        if (order != null) order(queryable);
+        if (include != null) queryable = include(queryable);
+        if (order != null) queryable = order(queryable);
         return queryable;
     }
 
     public TEntity? Get(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
     {
         var queryable = Query().Where(predicate);
-        if (include != null) include(queryable);
+        if (include != null) queryable = include(queryable);
         return queryable.FirstOrDefault();
     }
     public TEntity Add(TEntity entity)
