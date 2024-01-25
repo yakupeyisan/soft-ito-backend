@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using ExampleAPI.Entities;
 using ExampleAPI.Repositories.Abstracts;
+using ExampleAPI.Repositories.Concretes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,17 +15,47 @@ namespace ExampleAPI.Controllers;
 [Route("api/[controller]")]
 public class UsersController : Controller
 {
-    private IUserRepository _userRepository;
+    private readonly IUserRepository _userRepository;
+    private readonly IAccountTransactionRepository _accountTransactionRepository;
 
-    public UsersController(IUserRepository userRepository)
+    public UsersController(
+        IUserRepository userRepository,
+        IAccountTransactionRepository accountTransactionRepository)
     {
         _userRepository = userRepository;
+        _accountTransactionRepository = accountTransactionRepository;
     }
 
     [HttpGet("GetAll")]
     public IActionResult GetAll()
     {
         return Ok(_userRepository.GetAll());
+    }
+    [HttpGet("GetAllWithBalanceTransactions")]
+    public IActionResult GetAllWithBalanceTransactions()
+    {
+        return Ok(_userRepository.GetAll(
+            include:user=>user.Include(u=>u.AccountTransactions)
+            ));
+    }
+    [HttpGet("GetAllWithOrders")]
+    public IActionResult GetAllWithOrders()
+    {
+        return Ok(_userRepository.GetAll(
+            include: user => user
+                    .Include(u => u.Orders).ThenInclude(o=>o.OrderDetails).ThenInclude(od=>od.ProductTransaction)
+                    .Include(u=>u.Orders).ThenInclude(o=>o.OrderDetails).ThenInclude(od=>od.Product).ThenInclude(p=>p.Category)
+            ));
+    }
+    [HttpGet("GetAllWithAllDetails")]
+    public IActionResult GetAllWithAllDetails()
+    {
+        return Ok(_userRepository.GetAll(
+            include: user => user
+                    .Include(u => u.Orders).ThenInclude(o => o.OrderDetails).ThenInclude(od => od.ProductTransaction)
+                    .Include(u => u.Orders).ThenInclude(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Category)
+                    .Include(u=>u.AccountTransactions)
+            ));
     }
 
     [HttpGet("GetById/{id}")]
@@ -36,6 +68,11 @@ public class UsersController : Controller
     public IActionResult Add([FromBody] User user)
     {
         return Ok(_userRepository.Add(user));
+    }
+    [HttpPost("AddBalance")]
+    public IActionResult Add([FromBody] AccountTransaction accountTransaction)
+    {
+        return Ok(_accountTransactionRepository.Add(accountTransaction));
     }
 
     [HttpPut("Update")]

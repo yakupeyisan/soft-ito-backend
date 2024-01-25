@@ -19,6 +19,7 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductTransactionRepository, ProductTransactionRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+builder.Services.AddScoped<IAccountTransactionRepository, AccountTransactionRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

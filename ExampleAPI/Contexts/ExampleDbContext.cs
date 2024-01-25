@@ -22,6 +22,7 @@ public class ExampleDbContext:DbContext
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderDetail> OrderDetails { get; set; }
     public DbSet<ProductTransaction> ProductTransactions { get; set; }
+    public DbSet<AccountTransaction> AccountTransactions { get; set; }
 }
 
 

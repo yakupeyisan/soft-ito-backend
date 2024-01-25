@@ -15,4 +15,10 @@ public class User : Entity<Guid>
 	public required string IdentificationNumber { get; set; }
 	[MaxLength(10)]
 	public string? CarPlate { get; set; }
+	public virtual ICollection<Order> Orders { get; set; }
+	public virtual ICollection<AccountTransaction> AccountTransactions { get; set; }
+	public User()
+	{
+		AccountTransactions = new HashSet<AccountTransaction>();
+	}
 }

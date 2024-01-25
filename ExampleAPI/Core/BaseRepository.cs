@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using ExampleAPI.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,7 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity>
         if (predicate != null) queryable = queryable.Where(predicate);
         if (include != null) queryable = include(queryable);
         if (order != null) queryable = order(queryable);
+        Debug.WriteLine(queryable.ToQueryString());
         return queryable;
     }
 
