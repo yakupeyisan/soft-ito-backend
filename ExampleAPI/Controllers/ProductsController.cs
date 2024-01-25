@@ -29,13 +29,13 @@ public class ProductsController : Controller
     [HttpGet("GetAllWithCategory")]
     public IActionResult GetAllWithCAtegory()
     {
-        return Ok(_productRepository.GetAll(include:product=> product.Include(p=>p.Category)));
+        return Ok(_productRepository.GetAll(include: product => product.Include(p => p.Category)));
     }
 
     [HttpGet("GetById/{id}")]
     public IActionResult Get(Guid id)
     {
-        return Ok(_productRepository.Get(product=>product.Id==id));
+        return Ok(_productRepository.Get(product => product.Id == id));
     }
 
     [HttpPost("Add")]

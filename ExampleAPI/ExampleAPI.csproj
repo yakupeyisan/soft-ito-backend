@@ -31,6 +31,7 @@
     <None Remove="Core\" />
     <None Remove="Repositories\Abstracts\" />
     <None Remove="Repositories\Concretes\" />
+    <None Remove="DTOs\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -40,5 +41,6 @@
     <Folder Include="Core\" />
     <Folder Include="Repositories\Abstracts\" />
     <Folder Include="Repositories\Concretes\" />
+    <Folder Include="DTOs\" />
   </ItemGroup>
 </Project>
