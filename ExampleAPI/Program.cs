@@ -1,5 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using ExampleAPI.Contexts;
+using ExampleAPI.Core.Abstracts;
+using ExampleAPI.Core.Adapters;
 using ExampleAPI.Repositories.Abstracts;
 using ExampleAPI.Repositories.Concretes;
 
@@ -20,6 +22,7 @@ builder.Services.AddScoped<IProductTransactionRepository, ProductTransactionRepo
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
 builder.Services.AddScoped<IAccountTransactionRepository, AccountTransactionRepository>();
+builder.Services.AddScoped<ICheckIdentityService, CheckIdentityAdapter>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

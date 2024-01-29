@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ExampleAPI.Core.Abstracts;
 using ExampleAPI.Entities;
+using ExampleAPI.Integrations;
 using ExampleAPI.Repositories.Abstracts;
 using ExampleAPI.Repositories.Concretes;
 using Microsoft.AspNetCore.Mvc;
@@ -17,13 +19,16 @@ public class UsersController : Controller
 {
     private readonly IUserRepository _userRepository;
     private readonly IAccountTransactionRepository _accountTransactionRepository;
+    private readonly ICheckIdentityService _checkIdentityService;
 
     public UsersController(
         IUserRepository userRepository,
-        IAccountTransactionRepository accountTransactionRepository)
+        IAccountTransactionRepository accountTransactionRepository,
+        ICheckIdentityService checkIdentityService)
     {
         _userRepository = userRepository;
         _accountTransactionRepository = accountTransactionRepository;
+        _checkIdentityService = checkIdentityService;
     }
 
     [HttpGet("GetAll")]
@@ -67,6 +72,9 @@ public class UsersController : Controller
     [HttpPost("Add")]
     public IActionResult Add([FromBody] User user)
     {
+        bool result=_checkIdentityService.CheckIndentity(user.IdentificationNumber, user.FirstName, user.LastName, user.BirthYear);
+        if(result==false)
+            return BadRequest("Kimlik bilgileri hatalı.");
         return Ok(_userRepository.Add(user));
     }
     [HttpPost("AddBalance")]

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -21,6 +21,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="System.ServiceModel.Primitives" Version="6.2.0" />
+    <PackageReference Include="System.ServiceModel.Http" Version="6.2.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +34,9 @@
     <None Remove="Repositories\Abstracts\" />
     <None Remove="Repositories\Concretes\" />
     <None Remove="DTOs\" />
+    <None Remove="Integrations\" />
+    <None Remove="Core\Abstracts\" />
+    <None Remove="Core\Adapters\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -42,5 +47,8 @@
     <Folder Include="Repositories\Abstracts\" />
     <Folder Include="Repositories\Concretes\" />
     <Folder Include="DTOs\" />
+    <Folder Include="Integrations\" />
+    <Folder Include="Core\Abstracts\" />
+    <Folder Include="Core\Adapters\" />
   </ItemGroup>
 </Project>
