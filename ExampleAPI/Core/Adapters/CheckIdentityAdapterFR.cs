@@ -1,15 +1,14 @@
-﻿using System;
-using System.Diagnostics;
 using ExampleAPI.Core.Abstracts;
 using ExampleAPI.Integrations;
 
 namespace ExampleAPI.Core.Adapters;
 
-public class CheckIdentityAdapter : ICheckIdentityService
+public class CheckIdentityAdapterFR : ICheckIdentityService
 {
     public bool CheckIndentity(string identificationNumber, string firstName, string lastName, short birthYear)
     {
-        Console.WriteLine("Türkiye servisleri kullanıldı");
+        Console.WriteLine("Fransa servisleri kullanıldı");
+        //yeni kodları
         return CheckIdentityForTurkey.CheckIndentity(identificationNumber, firstName, lastName, birthYear);
     }
 

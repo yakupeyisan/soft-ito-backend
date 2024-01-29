@@ -1,4 +1,7 @@
 ﻿using System.Text.Json.Serialization;
+using ExampleAPI.Business.Abstracts;
+using ExampleAPI.Business.Concretes;
+using ExampleAPI.Business.Validations;
 using ExampleAPI.Contexts;
 using ExampleAPI.Core.Abstracts;
 using ExampleAPI.Core.Adapters;
@@ -22,7 +25,12 @@ builder.Services.AddScoped<IProductTransactionRepository, ProductTransactionRepo
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
 builder.Services.AddScoped<IAccountTransactionRepository, AccountTransactionRepository>();
-builder.Services.AddScoped<ICheckIdentityService, CheckIdentityAdapter>();
+builder.Services.AddKeyedScoped<ICheckIdentityService, CheckIdentityAdapter>("TURKEY");
+builder.Services.AddKeyedScoped<ICheckIdentityService, CheckIdentityAdapterUSA>("USA");
+builder.Services.AddKeyedScoped<ICheckIdentityService, CheckIdentityAdapterENG>("ENG");
+builder.Services.AddKeyedScoped<ICheckIdentityService, CheckIdentityAdapterFR>("FR");
+builder.Services.AddScoped<UserValidations>();
+builder.Services.AddScoped<IUserService,UserManager>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

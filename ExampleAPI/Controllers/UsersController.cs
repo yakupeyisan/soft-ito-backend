@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ExampleAPI.Business.Abstracts;
 using ExampleAPI.Core.Abstracts;
 using ExampleAPI.Entities;
 using ExampleAPI.Integrations;
@@ -17,36 +18,30 @@ namespace ExampleAPI.Controllers;
 [Route("api/[controller]")]
 public class UsersController : Controller
 {
-    private readonly IUserRepository _userRepository;
-    private readonly IAccountTransactionRepository _accountTransactionRepository;
-    private readonly ICheckIdentityService _checkIdentityService;
+    private readonly IUserService _userService;
 
     public UsersController(
-        IUserRepository userRepository,
-        IAccountTransactionRepository accountTransactionRepository,
-        ICheckIdentityService checkIdentityService)
+        IUserService userService)
     {
-        _userRepository = userRepository;
-        _accountTransactionRepository = accountTransactionRepository;
-        _checkIdentityService = checkIdentityService;
+        _userService=userService;
     }
 
     [HttpGet("GetAll")]
     public IActionResult GetAll()
     {
-        return Ok(_userRepository.GetAll());
+        return Ok(_userService.GetAll());
     }
     [HttpGet("GetAllWithBalanceTransactions")]
     public IActionResult GetAllWithBalanceTransactions()
     {
-        return Ok(_userRepository.GetAll(
+        return Ok(_userService.GetAll(
             include:user=>user.Include(u=>u.AccountTransactions)
             ));
     }
     [HttpGet("GetAllWithOrders")]
     public IActionResult GetAllWithOrders()
     {
-        return Ok(_userRepository.GetAll(
+        return Ok(_userService.GetAll(
             include: user => user
                     .Include(u => u.Orders).ThenInclude(o=>o.OrderDetails).ThenInclude(od=>od.ProductTransaction)
                     .Include(u=>u.Orders).ThenInclude(o=>o.OrderDetails).ThenInclude(od=>od.Product).ThenInclude(p=>p.Category)
@@ -55,7 +50,7 @@ public class UsersController : Controller
     [HttpGet("GetAllWithAllDetails")]
     public IActionResult GetAllWithAllDetails()
     {
-        return Ok(_userRepository.GetAll(
+        return Ok(_userService.GetAll(
             include: user => user
                     .Include(u => u.Orders).ThenInclude(o => o.OrderDetails).ThenInclude(od => od.ProductTransaction)
                     .Include(u => u.Orders).ThenInclude(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.Category)
@@ -66,35 +61,31 @@ public class UsersController : Controller
     [HttpGet("GetById/{id}")]
     public IActionResult Get(Guid id)
     {
-        return Ok(_userRepository.Get(user=>user.Id==id));
+        return Ok(_userService.Get(user=>user.Id==id));
     }
 
     [HttpPost("Add")]
     public IActionResult Add([FromBody] User user)
     {
-        bool result=_checkIdentityService.CheckIndentity(user.IdentificationNumber, user.FirstName, user.LastName, user.BirthYear);
-        if(result==false)
-            return BadRequest("Kimlik bilgileri hatalı.");
-        return Ok(_userRepository.Add(user));
+        return Ok(_userService.Add(user));
     }
     [HttpPost("AddBalance")]
-    public IActionResult Add([FromBody] AccountTransaction accountTransaction)
+    public IActionResult AddBalance([FromBody] AccountTransaction accountTransaction)
     {
-        return Ok(_accountTransactionRepository.Add(accountTransaction));
+        return Ok(_userService.AddBalance(accountTransaction));
     }
 
     [HttpPut("Update")]
     public IActionResult Update([FromBody] User user)
     {
-        return Ok(_userRepository.Update(user));
+        return Ok(_userService.Update(user));
     }
 
     [HttpDelete("DeleteById/{id}")]
     public IActionResult Delete(Guid id)
     {
-        var user = _userRepository.Get(user => user.Id == id);
-        if (user == null) return BadRequest("User not found");
-        return Ok(_userRepository.Delete(user));
+        _userService.DeleteById(id);
+        return Ok();
     }
 }
 
