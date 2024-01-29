@@ -33,7 +33,6 @@ public class UserManager : IUserService
         _userValidations.IfExists(user);
         _userRepository.Delete(user);
     }
-
     public User? Get(Expression<Func<User, bool>> predicate, Func<IQueryable<User>, IIncludableQueryable<User, object>>? include = null)
     {
         return _userRepository.Get(predicate,include);
