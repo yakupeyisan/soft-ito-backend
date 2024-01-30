@@ -1,4 +1,5 @@
-﻿using ExampleAPI.DTOs;
+﻿using ExampleAPI.Business.Abstracts;
+using ExampleAPI.DTOs;
 using ExampleAPI.Entities;
 using ExampleAPI.Repositories.Abstracts;
 using Microsoft.AspNetCore.Mvc;
@@ -11,30 +12,24 @@ namespace ExampleAPI.Controllers;
 [Route("api/[controller]")]
 public class OrdersController : Controller
 {
-    private readonly IOrderRepository _orderRepository;
-    private readonly IOrderDetailRepository _orderDetailRepository;
-    private readonly IProductTransactionRepository _productTransactionRepository;
+    private readonly IOrderService _orderService;
 
     public OrdersController(
-        IOrderRepository orderRepository,
-        IOrderDetailRepository orderDetailRepository,
-        IProductTransactionRepository productTransactionRepository
+        IOrderService orderService
         )
     {
-        _orderRepository = orderRepository;
-        _orderDetailRepository = orderDetailRepository;
-        _productTransactionRepository = productTransactionRepository;
+        _orderService = orderService;
     }
 
     [HttpGet("GetAll")]
     public IActionResult GetAll()
     {
-        return Ok(_orderRepository.GetAll());
+        return Ok(_orderService.GetAll());
     }
     [HttpGet("GetAllWithDetails")]
     public IActionResult GetAllWithDetails()
     {
-        return Ok(_orderRepository.GetAll(include: order =>
+        return Ok(_orderService.GetAll(include: order =>
         order.Include(o=>o.User)
             .Include(o => o.OrderDetails).ThenInclude(od=>od.Product).ThenInclude(p=>p.Category)
             .Include(o => o.OrderDetails).ThenInclude(od=>od.ProductTransaction)
@@ -46,58 +41,26 @@ public class OrdersController : Controller
     [HttpGet("GetById/{id}")]
     public IActionResult Get(Guid id)
     {
-        return Ok(_orderRepository.Get(order => order.Id == id));
+        return Ok(_orderService.Get(order => order.Id == id));
     }
 
     [HttpPost("Add")]
     public IActionResult Add([FromBody] AddOrderDto addOrderDto)
     {
-        if (addOrderDto.ProductTransactions.Count() == 0)
-        {
-            return BadRequest("Ürün listesi boş olamaz.");
-        }
-        if (addOrderDto.ProductTransactions.Where(t => t.Quantity == 0).Any())
-        {
-            return BadRequest("Ürün adedi 0 adet olamaz. Lütfen ürün listesini kontrol ediniz.");
-        }
-        var checkCounts=addOrderDto.ProductTransactions.Select(t =>
-            _productTransactionRepository.GetAll(pt => pt.ProductId == t.ProductId).Sum(transaction=>transaction.Quantity)-t.Quantity
-        ).Where(q=>q<0).Any();
-        if (checkCounts)
-        {
-            return BadRequest("Stokta yeteri kadar ürün yok.");
-        }
-        var addedOrder = _orderRepository.Add(new()
-        {
-            UserId=addOrderDto.UserId,
-            CreatedDate=DateTime.UtcNow
-        });
-        addOrderDto.ProductTransactions.ToList().ForEach(productTransaction =>
-        {
-            productTransaction.Quantity = productTransaction.Quantity > 0 ? -1*productTransaction.Quantity : productTransaction.Quantity;
-            var addedProductTransaction = _productTransactionRepository.Add(productTransaction);
-            _orderDetailRepository.Add(new()
-            {
-                OrderId= addedOrder.Id,
-                ProductId= productTransaction.ProductId,
-                ProductTransactionId= addedProductTransaction.Id
-            });
-        });
-        return Ok(addedOrder);
+        return Ok(_orderService.Add(addOrderDto));
     }
 
     [HttpPut("Update")]
     public IActionResult Update([FromBody] Order order)
     {
-        return Ok(_orderRepository.Update(order));
+        return Ok(_orderService.Update(order));
     }
 
     [HttpDelete("DeleteById/{id}")]
     public IActionResult Delete(Guid id)
     {
-        var order = _orderRepository.Get(order => order.Id == id);
-        if (order == null) return BadRequest("Order not found");
-        return Ok(_orderRepository.Delete(order));
+        _orderService.DeleteById(id);
+        return Ok();
     }
 }
 

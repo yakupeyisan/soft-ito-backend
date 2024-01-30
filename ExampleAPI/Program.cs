@@ -11,6 +11,9 @@ using ExampleAPI.Repositories.Abstracts;
 using ExampleAPI.Repositories.Concretes;
 using static System.Net.Mime.MediaTypeNames;
 using ExampleAPI.Middlewares;
+using System.Reflection;
+using System.Text.Json;
+using ExampleAPI.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,18 +34,23 @@ builder.Services.AddScoped<IProductTransactionRepository, ProductTransactionRepo
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
 builder.Services.AddScoped<IAccountTransactionRepository, AccountTransactionRepository>();
-builder.Services.AddKeyedScoped<ICheckIdentityService, CheckIdentityAdapter>("TURKEY");
-builder.Services.AddKeyedScoped<ICheckIdentityService, CheckIdentityAdapterUSA>("USA");
-builder.Services.AddKeyedScoped<ICheckIdentityService, CheckIdentityAdapterENG>("ENG");
-builder.Services.AddKeyedScoped<ICheckIdentityService, CheckIdentityAdapterFR>("FR");
+builder.Services.AddKeyedSingleton<ICheckIdentityService, CheckIdentityAdapter>("TURKEY");
+builder.Services.AddKeyedSingleton<ICheckIdentityService, CheckIdentityAdapterUSA>("USA");
+builder.Services.AddKeyedSingleton<ICheckIdentityService, CheckIdentityAdapterENG>("ENG");
+builder.Services.AddKeyedSingleton<ICheckIdentityService, CheckIdentityAdapterFR>("FR");
 builder.Services.AddScoped<UserValidations>();
 builder.Services.AddScoped<IUserService,UserManager>();
 builder.Services.AddScoped<CategoryValidations>();
 builder.Services.AddScoped<ICategoryService,CategoryManager>();
 builder.Services.AddScoped<ProductValidations>();
 builder.Services.AddScoped<IProductService,ProductManager>();
+builder.Services.AddScoped<ProductTransactionValidations>();
+builder.Services.AddScoped<IProductTransactionService,ProductTransactionManager>();
+builder.Services.AddScoped<OrderDetailValidations>();
+builder.Services.AddScoped<IOrderDetailService,OrderDetailManager>();
+builder.Services.AddScoped<OrderValidations>();
+builder.Services.AddScoped<IOrderService,OrderManager>();
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -68,7 +76,5 @@ app.Use(async (context,next)=>{
 
 });
 */
-
-
 app.Run();
 

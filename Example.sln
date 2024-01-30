@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleAPI", "ExampleAPI\Ex
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RelationForEntity", "RelationForEntity\RelationForEntity.csproj", "{8B79020A-E50D-428A-A4E3-25AE5F3DCFB6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearnServiceCollection", "LearnServiceCollection\LearnServiceCollection.csproj", "{F169F23A-AE3F-4B40-AA05-A2818038B681}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{8B79020A-E50D-428A-A4E3-25AE5F3DCFB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B79020A-E50D-428A-A4E3-25AE5F3DCFB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B79020A-E50D-428A-A4E3-25AE5F3DCFB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F169F23A-AE3F-4B40-AA05-A2818038B681}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F169F23A-AE3F-4B40-AA05-A2818038B681}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F169F23A-AE3F-4B40-AA05-A2818038B681}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F169F23A-AE3F-4B40-AA05-A2818038B681}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
